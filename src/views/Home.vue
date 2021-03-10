@@ -25,7 +25,7 @@ export default {
     homeHead,
     Aside
   },
-  computed: {}
+  computed: {},
 };
 </script>
 
