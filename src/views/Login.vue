@@ -83,7 +83,9 @@ export default {
                 type: "success",
                 duration: 500,
                 onClose: () => {
+                  console.log(res.data)
                   window.sessionStorage.setItem("token", res.data.token);
+                  window.sessionStorage.setItem("username", res.data.username);
                   this.$router.push("/home");
                   console.log(res);
                 },
