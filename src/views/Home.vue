@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header class="head">
       <homeHead></homeHead>
     </el-header>
     <el-container>
@@ -30,4 +30,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+.head{
+  padding: 0;
+}
 </style>
