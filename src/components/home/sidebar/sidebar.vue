@@ -1,7 +1,7 @@
 <template>
   <el-menu
     default-active="124"
-    class="el-menu-vertical-demo"
+    class="el-menu-vertical-demo cbl"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
@@ -48,14 +48,12 @@ export default {
       method: "post",
       data: { username: "admin", password: "123456" },
     }).then((res) => {
-      console.log(res);
       window.sessionStorage.setItem("token", res.data.token);
     });
     http({
       url: "menus",
       method: "get",
     }).then((res) => {
-      console.log(res);
       this.list = res.data;
     });
   },
@@ -63,4 +61,7 @@ export default {
 </script>
 
 <style scoped>
+.cbl {
+  height: 100%;
+}
 </style>
