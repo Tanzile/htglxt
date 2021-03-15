@@ -148,7 +148,7 @@ export default {
       inpid: null,
       tableData: [],
       total: 0,
-      currentPage4: 4,
+      currentPage4: 1,
       pagenum: 1,
       pagesize: 2,
       add: false,
@@ -261,7 +261,6 @@ export default {
         url: `users/${id}/state/${sta}`,
         method: "put",
       }).then((res) => {
-        console.log(res);
         if (res.meta.status == 200) {
           this.$message({
             message: `恭喜你，${res.data.username}的状态更改成功`,
@@ -284,6 +283,7 @@ export default {
       }).then((res) => {
         if (res.meta.status != 400) {
           this.tableData.splice(0, this.tableData.length, res.data);
+          this.inpid = "";
         } else {
           this.$message.error("用户不存在");
         }
@@ -306,7 +306,6 @@ export default {
           mobile: this.formlist.mobile,
         },
       }).then((res) => {
-        console.log(res);
         if (res.meta.status == 200) {
           this.$message({
             message: `恭喜你，${res.data.username}编辑成功`,
@@ -322,17 +321,18 @@ export default {
       });
     },
     //分配角色
-    szname(username, email) {
-      http({
-        url: `users/${513}/role`,
-        method: "put",
-        data: {
-          rid: 1000,
-        },
-      }).then((res) => {
-        console.log(res);
-      });
-    },
+    // szname(username, email) {
+    //   http({
+    //     url: `users/${513}/role`,
+    //     method: "put",
+    //     data: {
+    //       rid: 1000,
+    //     },
+    //   }).then((res) => {
+    //     this.qq();
+    //     console.log(res);
+    //   });
+    // },
   },
 
   components: {},

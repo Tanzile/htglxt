@@ -1,17 +1,18 @@
 <template>
   <div>
-    <h1>categories</h1>
+    <Categoriestalbal></Categoriestalbal>
   </div>
 </template>
 
 <script>
+import Categoriestalbal from "../home_categories/categories_talbal.vue";
 export default {
   props: {},
   data() {
     return {};
   },
   methods: {},
-  components: {},
+  components: { Categoriestalbal },
   computed: {},
 };
 </script>
