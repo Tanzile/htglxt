@@ -44,13 +44,6 @@ export default {
   computed: {},
   mounted() {
     http({
-      url: "/login",
-      method: "post",
-      data: { username: "admin", password: "123456" },
-    }).then((res) => {
-      window.sessionStorage.setItem("token", res.data.token);
-    });
-    http({
       url: "menus",
       method: "get",
     }).then((res) => {

@@ -1,7 +1,7 @@
 import axios from "axios"
 export default function (config) {
     const instance = axios.create({
-        baseURL: "http://192.168.1.30:8888/api/private/v1",
+        baseURL: "/api",
     });
     // 添加请求拦截器
     instance.interceptors.request.use(function (config) {
@@ -9,7 +9,7 @@ export default function (config) {
         if (config.url === "/login") {
             return config;
         } else {
-            let token = sessionStorage.getItem("token");
+            let token = window.sessionStorage.getItem("token");
             config.headers.Authorization = token;
         }
         return config;
@@ -19,10 +19,11 @@ export default function (config) {
     });
     // 添加响应拦截器
     instance.interceptors.response.use(function (response) {
+
         // 对响应数据做点什么
-        if (response.data.status == 400) {
-            router.replace("/");
-        }
+        // if (response.data.meta.status == 400) {
+        //     router.replace("/login");
+        // }
         return response.data;
         //根据data的情况。如果有提示token失效。过期，让用户重新登录
 

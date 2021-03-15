@@ -1,8 +1,8 @@
 <template>
   <homehead title="后台管理系统">
     <template #right>
-      <div class="name">宇崎花花花</div>
-      <el-button class="but">退出登录</el-button>
+      <div class="name">{{ names }}</div>
+      <el-button class="but" @click="tc">退出登录</el-button>
     </template>
   </homehead>
 </template>
@@ -14,11 +14,19 @@ export default {
   data() {
     return {};
   },
-  methods: {},
-  components: {
-    homehead
+  methods: {
+    tc() {
+      window.sessionStorage.setItem("token", "");
+    },
   },
-  computed: {}
+  components: {
+    homehead,
+  },
+  computed: {
+    names() {
+      return window.sessionStorage.getItem("username");
+    },
+  },
 };
 </script>
 
@@ -26,7 +34,7 @@ export default {
 .but {
   height: 30px;
 }
-.name{
+.name {
   margin-right: 10px;
 }
 </style>

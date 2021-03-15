@@ -59,6 +59,12 @@ const routes = [{
         component: () =>
           import('../components/home_children/reports.vue'),
       },
+      {
+        path: "addgoods",
+        name: "Addgoods",
+        component: () =>
+          import('../components/home_goods/add_goods.vue'),
+      }
     ]
   },
   //login

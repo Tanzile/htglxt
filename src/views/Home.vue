@@ -7,7 +7,7 @@
       <el-aside width="200px">
         <Aside></Aside>
       </el-aside>
-      <el-main><router-view></router-view></el-main>
+      <el-main class="head2"><router-view></router-view></el-main>
     </el-container>
   </el-container>
 </template>
@@ -32,5 +32,8 @@ export default {
 <style scoped lang="less">
 .head{
   padding: 0;
+}
+.head2{
+  height: 100%;
 }
 </style>
