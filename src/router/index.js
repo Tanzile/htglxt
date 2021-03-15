@@ -10,7 +10,7 @@ const routes = [{
         path: '/home',
         name: 'Home',
         component: () =>
-            import ( /* webpackChunkName:home */ './../views/Home.vue'),
+            import ('./../views/Home.vue'),
         children: [{
                 path: '/',
                 redirect: 'welcome'
@@ -19,55 +19,55 @@ const routes = [{
                 path: "users",
                 name: "Users",
                 component: () =>
-                    import ( /* webpackChunkName:users */ '../components/home_children/users.vue'),
+                    import ('../components/home_children/users.vue'),
             },
             {
                 path: "roles",
                 name: "Roles",
                 component: () =>
-                    import ( /* webpackChunkName:roles */ '../components/home_children/roles.vue'),
+                    import ('../components/home_children/roles.vue'),
             },
             {
                 path: "rights",
                 name: "Rights",
                 component: () =>
-                    import ( /* webpackChunkName:rights */ '../components/home_children/rights.vue'),
+                    import ('../components/home_children/rights.vue'),
             },
             {
                 path: "goods",
                 name: "Goods",
                 component: () =>
-                    import ( /* webpackChunkName:goods */ '../components/home_children/goods.vue'),
+                    import ('../components/home_children/goods.vue'),
             },
             {
                 path: "params",
                 name: "Params",
                 component: () =>
-                    import ( /* webpackChunkName:params */ '../components/home_children/params.vue'),
+                    import ('../components/home_children/params.vue'),
             },
             {
                 path: "categories",
                 name: "Categories",
                 component: () =>
-                    import ( /* webpackChunkName:categories */ '../components/home_children/categories.vue'),
+                    import ('../components/home_children/categories.vue'),
             },
             {
                 path: "orders",
                 name: "Orders",
                 component: () =>
-                    import ( /* webpackChunkName:orders */ '../components/home_children/orders.vue'),
+                    import ('../components/home_children/orders.vue'),
             },
             {
                 path: "reports",
                 name: "Reports",
                 component: () =>
-                    import ( /* webpackChunkName:reports */ '../components/home_children/reports.vue'),
+                    import ('../components/home_children/reports.vue'),
             },
             {
                 path: "welcome",
                 name: "Welcome",
                 component: () =>
-                    import ( /* webpackChunkName:welcome */ '../components/home_children/welcome.vue'),
+                    import ('../components/home_children/welcome.vue'),
             },
         ]
     },
@@ -76,7 +76,7 @@ const routes = [{
         path: '/login',
         name: 'Login',
         component: () =>
-            import ( /* webpackChunkName:login */ './../views/Login.vue')
+            import ('./../views/Login.vue')
     }
 ]
 
