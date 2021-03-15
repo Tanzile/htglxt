@@ -47,8 +47,10 @@ export default {
     var myChart = this.$echarts.init(document.getElementById("echarts_box"));
     http("/reports/type/1").then((res) => {
       const result = _.merge(res.data,this.options)
-      console.log(result)
       myChart.setOption(result);
+    });
+    window.addEventListener("resize", function () {
+      myChart.resize();
     });
   },
 };
@@ -56,9 +58,13 @@ export default {
 
 <style scoped lang="less">
 #reports {
+  padding: 20px;
+  border-radius: 5px;
+  background: #fff;
+
   #echarts_box {
-    width: 80%;
-    height: 300px;
+    width: 100%;
+    height: 500px;
   }
 }
 </style>

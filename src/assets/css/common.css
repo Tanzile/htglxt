@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+#box {
+    min-width: 1366px;
+}
+
+
 /* 禁用iPhone中Safari的字号自动调整 */
 
 html {
@@ -12,12 +17,14 @@ html {
     /* 字体大小设置为 100px */
 }
 
-html ,body {
+html,
+body {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
     background-color: #fff;
 }
+
 
 /* 去除iPhone中默认的input样式 */
 
@@ -25,6 +32,7 @@ input {
     -webkit-appearance: none;
     resize: none;
 }
+
 
 /* 取消链接高亮  */
 
@@ -70,6 +78,7 @@ section {
     font-family: Microsoft YaHei;
 }
 
+
 /* 设置HTML5元素为块 */
 
 article,
@@ -85,6 +94,7 @@ nav,
 section {
     display: block;
 }
+
 
 /* 图片自适应 */
 
@@ -102,6 +112,7 @@ img {
     outline: none;
 }
 
+
 /* 清除输入框内阴影 */
 
 input,
@@ -112,12 +123,14 @@ textarea {
     appearance: none;
 }
 
+
 /* 禁用长按页面时的弹出菜单(iOS下有效) ,img和a标签都要加 */
 
 img,
 a {
     -webkit-touch-callout: none;
 }
+
 
 /* 清零 */
 

@@ -44,30 +44,22 @@ export default {
         pwd: "",
       },
       rules: {
-        usn: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          {
-            min: 3,
-            max: 20,
-            message: "长度在 3 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
-        pwd: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          {
-            min: 3,
-            max: 20,
-            message: "长度在 3 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
+        rules: {
+          usn: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          ],
+          pwd: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          ],
+        }
       },
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    submitForm(userInfo) {
+      this.$refs[userInfo].validate((valid) => {
         if (valid) {
           http({
             url: "/login",
@@ -83,7 +75,7 @@ export default {
                 type: "success",
                 duration: 500,
                 onClose: () => {
-                  console.log(res.data)
+                  console.log(res.data);
                   window.sessionStorage.setItem("token", res.data.token);
                   window.sessionStorage.setItem("username", res.data.username);
                   this.$router.push("/home");
@@ -99,8 +91,9 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm() {
+      this.userInfo.usn = "" ;
+      this.userInfo.pwd = "" ;
     },
   },
   components: {},
