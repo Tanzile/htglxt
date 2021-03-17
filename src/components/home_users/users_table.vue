@@ -204,6 +204,7 @@ export default {
           console.log(res);
           this.tableData = res.data.users;
           this.total = res.data.total;
+          this.loading = false;
         });
     },
     //分页器
@@ -244,7 +245,6 @@ export default {
     //删除
     del(v) {
       let vs = Number(v);
-
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -367,9 +367,6 @@ export default {
       this.jslist = res.data;
     });
     this.qq();
-  },
-  updated() {
-    this.loading = false;
   },
 };
 </script>
