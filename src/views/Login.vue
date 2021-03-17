@@ -46,14 +46,24 @@ export default {
       rules: {
         rules: {
           usn: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
-            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+            { required: true, message: "请输入用户名", trigger: "blur" },
+            {
+              min: 3,
+              max: 20,
+              message: "长度在 3 到 20 个字符",
+              trigger: "blur",
+            },
           ],
           pwd: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+            { required: true, message: "请输入密码", trigger: "blur" },
+            {
+              min: 3,
+              max: 20,
+              message: "长度在 3 到 20 个字符",
+              trigger: "blur",
+            },
           ],
-        }
+        },
       },
     };
   },
@@ -70,10 +80,19 @@ export default {
             },
           }).then((res) => {
             if (res.meta.status == 200) {
+              const loading = this.$loading({
+                lock: true,
+                text: "Loading",
+                spinner: "el-icon-loading",
+                background: "rgba(0, 0, 0, 0.7)",
+              });
+              setTimeout(() => {
+                loading.close();
+              }, 3000);
               this.$message({
                 message: "登陆成功!",
                 type: "success",
-                duration: 500,
+                duration: 3000,
                 onClose: () => {
                   console.log(res.data);
                   window.sessionStorage.setItem("token", res.data.token);
@@ -92,8 +111,8 @@ export default {
       });
     },
     resetForm() {
-      this.userInfo.usn = "" ;
-      this.userInfo.pwd = "" ;
+      this.userInfo.usn = "";
+      this.userInfo.pwd = "";
     },
   },
   components: {},

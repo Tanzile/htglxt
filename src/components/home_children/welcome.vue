@@ -1,5 +1,11 @@
 <template>
-  <div id="welcome">
+  <div
+    id="welcome"
+    v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <el-card id="echarts_categories"></el-card>
     <div id="welcome_upside">
       <el-card id="echarts_roles"></el-card>
@@ -16,6 +22,7 @@ export default {
   props: {},
   data() {
     return {
+      loading: true,
       categoriesOptions: {
         title: {
           text: "商品信息",
@@ -111,9 +118,9 @@ export default {
             },
             data: [],
             emphasis: {
-              label:{
-                show:true
-              }
+              label: {
+                show: true,
+              },
             },
           },
         ],
@@ -178,9 +185,10 @@ export default {
         res.data.forEach((item) => {
           this.rightsOptions.series[0].data.push({
             value: item.id,
-            name:item.authName
+            name: item.authName,
           });
           rightsChart.setOption(this.rightsOptions);
+          this.loading = false;
         });
       }
     });
@@ -235,7 +243,7 @@ export default {
     }
   }
 }
-.hh{
+.hh {
   position: absolute;
   z-index: 3;
   margin-top: -550px;

@@ -1,8 +1,14 @@
 <template>
-  <div id="reports">
-      <div class="hh">
-        <Breadcrumb one="数据统计" two="数据列表"></Breadcrumb>
-      </div>
+  <div
+    id="reports"
+    v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
+    <div class="hh">
+      <Breadcrumb one="数据统计" two="数据列表"></Breadcrumb>
+    </div>
     <div id="echarts_box"></div>
   </div>
 </template>
@@ -15,6 +21,7 @@ export default {
   props: {},
   data() {
     return {
+      loading: true,
       options: {
         title: {
           text: "用户来源",
@@ -52,6 +59,7 @@ export default {
     http("/reports/type/1").then((res) => {
       const result = _.merge(res.data, this.options);
       myChart.setOption(result);
+      this.loading = false;
     });
     window.addEventListener("resize", function () {
       myChart.resize();
@@ -75,7 +83,7 @@ export default {
     height: 500px;
   }
 }
-.hh{
+.hh {
   position: absolute;
   margin-top: -50px;
 }

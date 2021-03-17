@@ -6,6 +6,10 @@
       >添加分类</el-button
     >
     <zk-table
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
       :data="cateList"
       :columns="columns"
       border
@@ -111,6 +115,7 @@ import http from "../axios/axios";
 export default {
   data() {
     return {
+      loading: true,
       addid: [],
       bjlist: {
         name: "",
@@ -167,6 +172,7 @@ export default {
       }).then((res) => {
         this.total = res.data.total;
         this.cateList = res.data.result;
+        this.loading = false;
       });
     },
     //分页器
@@ -293,7 +299,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.ac{
+.ac {
   margin-top: 20px;
 }
 .aa {

@@ -12,7 +12,16 @@
     </el-input>
     <el-button icon="el-icon-search" @click="searchOrders">搜索</el-button>
     <!-- 表格 -->
-    <el-table :data="ordersList" stripe style="width: 100%" border>
+    <el-table
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :data="ordersList"
+      stripe
+      style="width: 100%"
+      border
+    >
       <el-table-column label="#" type="index"> </el-table-column>
       <el-table-column prop="order_number" label="订单编号"> </el-table-column>
       <el-table-column prop="order_price" label="订单价格"> </el-table-column>
@@ -121,6 +130,7 @@ export default {
   props: {},
   data() {
     return {
+      loading: true,
       pagenum: 1,
       pagesize: 5,
       total: 0,
@@ -163,6 +173,7 @@ export default {
           this.total = res.data.total;
           this.$message.success("加载订单成功!");
           log(this.ordersList);
+          this.loading = false;
         }
       });
     },

@@ -92,7 +92,16 @@
       </template>
     </el-dialog>
     <!-- 角色列表 -->
-    <el-table :data="tableData" style="width: 100%" border stripe>
+    <el-table
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :data="tableData"
+      style="width: 100%"
+      border
+      stripe
+    >
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-row
@@ -179,6 +188,7 @@ export default {
   props: {},
   data() {
     return {
+      loading: true,
       // 列表中的所有数据
       tableData: [],
       // 显示隐藏
@@ -218,7 +228,7 @@ export default {
         } else {
           this.$message.success("获取列表成功!");
           this.tableData = res.data;
-          console.log(res);
+          this.loading = false;
         }
       });
     },
@@ -460,7 +470,7 @@ export default {
     align-items: center;
   }
 }
-.hh{
+.hh {
   position: absolute;
   margin-top: -50px;
 }

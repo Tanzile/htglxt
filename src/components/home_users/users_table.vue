@@ -6,7 +6,15 @@
       <el-button type="primary" @click="add = true">添加用户</el-button>
     </div>
     <!-- 用户列表渲染 -->
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table
+      :data="tableData"
+      border
+      style="width: 100%"
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
       <el-table-column label="#" type="index"></el-table-column>
       <el-table-column prop="username" label="姓名" width="180">
       </el-table-column>
@@ -149,6 +157,7 @@ export default {
   props: {},
   data() {
     return {
+      loading: true,
       inpid: null,
       tableData: [],
       total: 0,
@@ -184,18 +193,18 @@ export default {
   methods: {
     //封装的请求
     qq() {
-      http({
-        url: "users",
-        method: "get",
-        params: {
-          pagenum: this.pagenum,
-          pagesize: this.pagesize,
-        },
-      }).then((res) => {
-        console.log(res);
-        this.tableData = res.data.users;
-        this.total = res.data.total;
-      });
+        http({
+          url: "users",
+          method: "get",
+          params: {
+            pagenum: this.pagenum,
+            pagesize: this.pagesize,
+          },
+        }).then((res) => {
+          console.log(res);
+          this.tableData = res.data.users;
+          this.total = res.data.total;
+        });
     },
     //分页器
     handleSizeChange(val) {
@@ -358,6 +367,9 @@ export default {
       this.jslist = res.data;
     });
     this.qq();
+  },
+  updated() {
+    this.loading = false;
   },
 };
 </script>
