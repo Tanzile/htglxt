@@ -1,15 +1,15 @@
 <template>
-  <div
-    id="reports"
-    v-loading="loading"
-    element-loading-text="拼命加载中"
-    element-loading-spinner="el-icon-loading"
-    element-loading-background="rgba(0, 0, 0, 0.8)"
-  >
-    <div class="hh">
-      <Breadcrumb one="数据统计" two="数据列表"></Breadcrumb>
+  <div>
+    <Breadcrumb one="数据统计" two="数据列表"></Breadcrumb>
+    <div
+      id="reports"
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
+      <div id="echarts_box"></div>
     </div>
-    <div id="echarts_box"></div>
   </div>
 </template>
 
@@ -82,9 +82,5 @@ export default {
     width: 100%;
     height: 500px;
   }
-}
-.hh {
-  position: absolute;
-  margin-top: -50px;
 }
 </style>

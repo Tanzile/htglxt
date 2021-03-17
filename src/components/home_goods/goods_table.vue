@@ -6,7 +6,15 @@
       <el-button type="primary" @click="tj()">添加商品</el-button>
     </div>
     <!-- 用户列表渲染 -->
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :data="tableData"
+      border
+      style="width: 100%"
+    >
       <el-table-column label="#" type="index"></el-table-column>
       <el-table-column prop="goods_name" label="商品名称" width="500">
       </el-table-column>
@@ -112,6 +120,7 @@ export default {
   props: {},
   data() {
     return {
+      loading: true,
       inpid: null,
       tableData: [],
       props: { value: "cat_id", label: "cat_name", children: "children" },
@@ -161,6 +170,7 @@ export default {
       }).then((res) => {
         this.tableData = res.data.goods;
         this.total = res.data.total;
+        this.loading = false;
       });
     },
     //分页器
@@ -190,7 +200,7 @@ export default {
           }).then((res) => {
             if (res.meta.status == 200) {
               this.$message({
-                message: "恭喜你，删除用户成功",
+                message: "恭喜你，删除商品成功",
                 type: "success",
                 duration: 1000,
                 onClose: () => {
@@ -198,7 +208,7 @@ export default {
                 },
               });
             } else {
-              this.$message.error("用户删除失败");
+              this.$message.error("商品删除失败");
             }
           });
         },
@@ -317,7 +327,7 @@ export default {
 .but {
   background: #f5f7fa;
 }
-.dd{
+.dd {
   margin-left: 20px;
 }
 </style>
