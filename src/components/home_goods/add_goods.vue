@@ -1,6 +1,6 @@
 <template>
   <div id="box">
-    <el-alert title="添加商品" type="info" center show-icon> </el-alert>
+    <el-alert class="hh" title="添加商品" type="info" center show-icon> </el-alert>
     <div class="hend">
       <el-steps :active="active" finish-status="success" space="1200px">
         <el-step title="基本信息"></el-step>
@@ -18,7 +18,7 @@
         :tab-position="tabPosition"
         style="height: 100%"
       >
-        <el-tab-pane name="1" label="基本信息">
+        <el-tab-pane name="0" label="基本信息">
           <!--  -->
           <el-form
             v-model="formInline"
@@ -26,15 +26,15 @@
             label-width="80px"
           >
             <el-form-item label="商品名称" required>
-              <el-input v-model="formInline.name"></el-input>
+              <el-input class="s" v-model="formInline.name"></el-input>
             </el-form-item>
             <el-form-item label="商品价格" required>
-              <el-input v-model="formInline.pic"></el-input>
+              <el-input class="s" v-model="formInline.pic"></el-input>
             </el-form-item>
             <el-form-item label="商品重量" required>
-              <el-input v-model="formInline.wie"></el-input>
+              <el-input class="s" v-model="formInline.wie"></el-input>
             </el-form-item>
-            <el-form-item label="商品数量" required>
+            <el-form-item class="s" label="商品数量" required>
               <el-input-number
                 class="w"
                 v-model="formInline.number"
@@ -55,7 +55,7 @@
           </el-form>
           <!--  -->
         </el-tab-pane>
-        <el-tab-pane name="2" :disabled="csbd" label="商品参数">
+        <el-tab-pane name="1" :disabled="csbd" label="商品参数">
           <el-checkbox
             v-for="item in cs"
             :key="item.id"
@@ -66,19 +66,43 @@
             size="medium"
           ></el-checkbox>
         </el-tab-pane>
-        <el-tab-pane name="3" :disabled="sxjtbd" label="商品属性">
-          <el-form :label-position="labelPosition" label-width="80px">
+        <el-tab-pane name="2" :disabled="csbd" label="商品属性">
+          <el-form
+            :model="sxnew"
+            :label-position="labelPosition"
+            label-width="80px"
+          >
             <el-form-item
               v-for="item in sxlist"
               :key="item.attr_id"
               :label="item.attr_name"
             >
-              <el-input></el-input>
+              <el-input :value="item.attr_vals"></el-input>
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane name="4" label="商品图片">定时任务补偿</el-tab-pane>
-        <el-tab-pane name="5" label="商品内容">定时任务补偿</el-tab-pane>
+        <el-tab-pane name="3" :disabled="csbd" label="商品图片">
+          <el-upload
+            class="upload-demo"
+            :action="imghttp"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            list-type="picture"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">
+              只能上传jpg/png文件，且不超过500kb
+            </div>
+          </el-upload>
+        </el-tab-pane>
+        <el-tab-pane :disabled="csbd" name="4" label="商品内容">
+          <quill-editor class="h" v-model="formInline.goods_introduce">
+          </quill-editor>
+          <el-button @click="addfs" type="primary" class="but"
+            >添加商品</el-button
+          >
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -93,13 +117,17 @@ export default {
       tabPosition: "left",
       labelPosition: "top",
       num: 0,
-      csbd: false,
-      sxbd: false,
-      sxjtbd: false,
+      csbd: true,
+      sxnew: {
+        name: "",
+        vals: "",
+      },
       list: [],
+      fileList: [],
       sxlist: [],
       value: [],
       name: "",
+      imghttp: "/api/upload",
       checked3: true,
       cs: [],
       props: { value: "cat_id", label: "cat_name", children: "children" },
@@ -108,11 +136,12 @@ export default {
         pic: "",
         wie: "",
         number: 0,
+        goods_introduce: "",
       },
     };
   },
   methods: {
-    handleChange() {
+    handleChange(v) {
       if (
         this.formInline.name != "" &&
         this.formInline.pic != "" &&
@@ -123,7 +152,7 @@ export default {
         this.csbd = false;
         this.sxbd = false;
         this.active++;
-        this.name = "2";
+        this.name = "1";
       } else {
         this.$message.error("请补全，表格的信息");
         return false;
@@ -147,6 +176,7 @@ export default {
         },
       }).then((res) => {
         this.sxlist = res.data;
+        this.sxjtbd = false;
         console.log(res);
       });
     },
@@ -159,9 +189,8 @@ export default {
         },
       }).then((res) => {
         this.cs = res.data;
-        console.log(res);
-        console.log(this.cs);
       });
+      this.active = this.name - 0;
       //静态
       http({
         url: `categories/${this.value[2]}/attributes`,
@@ -171,19 +200,46 @@ export default {
         },
       }).then((res) => {
         this.sxlist = res.data;
-        console.log(res);
       });
-      if ((this.checked3 = true)) {
-        this.sxbd = false;
-        this.active++;
-        this.name = "3";
-      }
+    },
+    handlePreview() {},
+    handleRemove() {},
+    addfs() {
+      console.log(this.formInline);
+      console.log(this.list);
+      http({
+        url: "goods",
+        method: "post",
+        data: {
+          goods_name: this.formInline.name,
+          goods_cat: `${this.value[0]},${this.value[1]},${this.value[2]}`,
+          goods_price: this.formInline.pic,
+          goods_number: this.formInline.number,
+          goods_weight: this.formInline.wie,
+          goods_introduce: this.goods_introduce,
+        },
+      }).then((res) => {
+        this.name++
+        console.log(res);
+        if (res.meta.status == 201) {
+          this.$message({
+            message: `恭喜你，用户添加成功`,
+            type: "success",
+            duration: 1000,
+            onClose: () => {
+              this.$router.replace("/home/goods");
+            },
+          });
+        } else {
+          this.$message.error("用户添加失败");
+        }
+      });
     },
   },
   components: {},
   computed: {},
   mounted() {
-    this.name = "1";
+    this.name = "0";
     http({
       url: "categories",
       method: "get",
@@ -201,6 +257,10 @@ export default {
 .hend {
   margin-top: 20px;
   margin-left: 200px;
+  width: 80%;
+}
+.hh{
+  width: 80%;
 }
 #box {
   background: #fff;
@@ -208,9 +268,15 @@ export default {
   height: 100%;
 }
 .w {
-  width: 100%;
+  width: 80%;
 }
 .bqq {
   margin-top: 50px;
+}
+.but {
+  margin-top: 50px;
+}
+.s {
+  width: 80%;
 }
 </style>

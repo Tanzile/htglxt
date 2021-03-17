@@ -3,7 +3,7 @@
     <el-header class="head">
       <homeHead></homeHead>
     </el-header>
-    <el-container>
+    <el-container class="h">
       <el-aside width="200px">
         <Aside></Aside>
       </el-aside>
@@ -34,6 +34,9 @@ export default {
   padding: 0;
 }
 .head2{
+  height: 100%;
+}
+.h{
   height: 100%;
 }
 </style>

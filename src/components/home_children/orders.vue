@@ -1,5 +1,8 @@
 <template>
   <div id="orders">
+    <div class="hh">
+      <Breadcrumb one="订单管理" two="订单列表"></Breadcrumb>
+    </div>
     <!-- 搜索 -->
     <el-input
       placeholder="请输入内容"
@@ -20,7 +23,7 @@
       <el-table-column prop="is_send" label="是否发货"> </el-table-column>
       <el-table-column prop="create_time" label="下单时间">
         <template slot-scope="scope">
-        {{ scope.row.create_time | filtedate }}
+          {{ scope.row.create_time | filtedate }}
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -111,7 +114,8 @@
 
 <script>
 import http from "./../axios/axios";
-import { fmtDate } from '@/components/filters/date.js';
+import { fmtDate } from "@/components/filters/date.js";
+import Breadcrumb from "../gz/breadcrumb ";
 let { log } = console;
 export default {
   props: {},
@@ -210,9 +214,9 @@ export default {
       }).then((res) => log(res)); */
     },
     // 搜索
-    searchOrders(){
-      this.$message.info("此功能尚在维护中...")
-    }
+    searchOrders() {
+      this.$message.info("此功能尚在维护中...");
+    },
   },
   filters: {
     filtedate: function (date) {
@@ -220,7 +224,9 @@ export default {
       return fmtDate(t, "yyyy-MM-dd hh:mm:ss");
     },
   },
-  components: {},
+  components: {
+    Breadcrumb,
+  },
   computed: {},
   mounted() {
     this.loadOrdersList();
@@ -233,10 +239,15 @@ export default {
   padding: 20px;
   border-radius: 5px;
   background: #fff;
+  margin-top: 40px;
 
   .searchOrder {
     margin-bottom: 15px;
     width: 200px;
   }
+}
+.hh {
+  margin-top: -50px;
+  position: absolute;
 }
 </style>

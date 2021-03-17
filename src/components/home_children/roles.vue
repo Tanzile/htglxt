@@ -1,5 +1,8 @@
 <template>
   <div id="roles">
+    <div class="hh">
+      <Breadcrumb one="权限管理" two="角色列表"></Breadcrumb>
+    </div>
     <!-- 添加角色 -->
     <el-button type="primary" @click="dialogFormVisible = true">
       添加角色
@@ -171,6 +174,7 @@
 
 <script>
 import http from "./../axios/axios";
+import Breadcrumb from "../gz/breadcrumb ";
 export default {
   props: {},
   data() {
@@ -394,7 +398,9 @@ export default {
       this.treeVisible = false;
     },
   },
-  components: {},
+  components: {
+    Breadcrumb,
+  },
 };
 </script>
 
@@ -404,6 +410,7 @@ export default {
   width: 100%;
   background: #fff;
   border-radius: 5px;
+  margin-top: 20px;
 
   .addbox {
     padding: 20px;
@@ -452,5 +459,9 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+.hh{
+  position: absolute;
+  margin-top: -50px;
 }
 </style>

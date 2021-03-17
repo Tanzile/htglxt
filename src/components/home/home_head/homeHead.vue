@@ -17,6 +17,7 @@ export default {
   methods: {
     tc() {
       window.sessionStorage.setItem("token", "");
+      this.$router.replace("/");
     },
   },
   components: {
@@ -36,5 +37,8 @@ export default {
 }
 .name {
   margin-right: 10px;
+}
+.tt {
+  margin-bottom: 10px;
 }
 </style>

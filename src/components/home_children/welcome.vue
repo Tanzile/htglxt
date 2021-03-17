@@ -1,5 +1,8 @@
 <template>
   <div id="welcome">
+    <div class="hh">
+      <Breadcrumb one="总数据" two=""></Breadcrumb>
+    </div>
     <el-card id="echarts_user"></el-card>
     <el-card id="echarts_goods"></el-card>
   </div>
@@ -8,6 +11,7 @@
 <script>
 import http from "./../axios/axios";
 import _ from "lodash";
+import Breadcrumb from "../gz/breadcrumb ";
 export default {
   props: {},
   data() {
@@ -64,6 +68,9 @@ export default {
       goodsChart.resize();
     });
   },
+  components: {
+    Breadcrumb,
+  },
 };
 </script>
 
@@ -74,20 +81,26 @@ export default {
   padding: 5px;
   border-radius: 5px;
   background: #fff;
+  margin-top: 20px;
 
   #echarts_user {
     box-sizing: border-box;
     margin-right: 1%;
-    padding:20px 10px;
+    padding: 20px 10px;
     width: 50%;
     height: 500px;
   }
 
   #echarts_goods {
     box-sizing: border-box;
-    padding:20px 10px;
+    padding: 20px 10px;
     width: 50%;
     height: 500px;
   }
+}
+.hh{
+  position: absolute;
+  z-index: 3;
+  margin-top: -550px;
 }
 </style>

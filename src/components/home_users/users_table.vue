@@ -124,16 +124,20 @@
         </el-form-item>
         <el-form-item label="分配新角色" :label-width="formLabelWidth">
           <el-select v-model="szlist.region" placeholder="请选择">
-            <el-option label="超级管理员" value="超级管理员"></el-option>
-            <el-option label="主管" value="主管"></el-option>
-            <el-option label="测试角色" value="测试角色"></el-option>
-            <el-option label="测试角色2" value="测试角色2"></el-option>
+            <el-option
+              v-for="item in jslist"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addss = false">取 消</el-button>
-        <el-button type="primary" @click="addss = false">确 定</el-button>
+        <el-button type="primary" @click="(addss = false), fp()"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -154,6 +158,7 @@ export default {
       add: false,
       adds: false,
       addss: false,
+      jslist: [],
       form: {
         username: "",
         password: "",
@@ -187,6 +192,7 @@ export default {
           pagesize: this.pagesize,
         },
       }).then((res) => {
+        console.log(res);
         this.tableData = res.data.users;
         this.total = res.data.total;
       });
@@ -321,23 +327,36 @@ export default {
       });
     },
     //分配角色
-    // szname(username, email) {
-    //   http({
-    //     url: `users/${513}/role`,
-    //     method: "put",
-    //     data: {
-    //       rid: 1000,
-    //     },
-    //   }).then((res) => {
-    //     this.qq();
-    //     console.log(res);
-    //   });
-    // },
+    szname(username, email, id) {
+      this.szlist.username = username;
+      this.szlist.email = email;
+      this.szlist.id = id;
+    },
+    fp() {
+      console.log(this.szlist.id);
+      console.log(this.szlist.region);
+      http({
+        url: `users/${this.szlist.id}/role`,
+        method: "put",
+        data: {
+          rid: this.szlist.region - 0,
+        },
+      }).then((res) => {
+        this.qq();
+        console.log(res);
+      });
+    },
   },
 
   components: {},
   computed: {},
   mounted() {
+    http({
+      url: "roles",
+      method: "get",
+    }).then((res) => {
+      this.jslist = res.data;
+    });
     this.qq();
   },
 };
@@ -348,6 +367,7 @@ export default {
   width: 1200px;
   background: #fff;
   padding: 30px;
+  margin-top: 20px;
 }
 .inp {
   width: 240px;

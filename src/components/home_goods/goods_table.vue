@@ -8,7 +8,7 @@
     <!-- 用户列表渲染 -->
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column label="#" type="index"></el-table-column>
-      <el-table-column prop="goods_name" label="商品名称" width="700">
+      <el-table-column prop="goods_name" label="商品名称" width="500">
       </el-table-column>
       <el-table-column prop="goods_price" label="商品价格" width="150">
       </el-table-column>
@@ -84,6 +84,17 @@
           ></el-input>
         </el-form-item>
       </el-form>
+      <div class="dd">
+        <span class="demonstration">选择商品分类：</span>
+        <el-cascader
+          class="qqs"
+          prop="goods_cat"
+          v-model="value"
+          :options="list"
+          :props="props"
+          @change="handleChange"
+        ></el-cascader>
+      </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="adds = false">取 消</el-button>
         <el-button type="primary" @click="(adds = false), setname()"
@@ -103,6 +114,9 @@ export default {
     return {
       inpid: null,
       tableData: [],
+      props: { value: "cat_id", label: "cat_name", children: "children" },
+      list: [],
+      value: [],
       total: 0,
       currentPage4: 1,
       pagenum: 1,
@@ -241,6 +255,7 @@ export default {
     },
     //提交要编辑的数据
     setname() {
+      console.log(this.value);
       http({
         url: `goods/${this.formlist.goods_id}`,
         method: "put",
@@ -250,8 +265,10 @@ export default {
           goods_number: this.formlist.goods_number,
           goods_weight: this.formlist.goods_weight,
           goods_introduce: this.formlist.goods_introduce,
+          goods_cat: `${this.value[0]},${this.value[1]},${this.value[2]}`,
         },
       }).then((res) => {
+        console.log(res);
         if (res.meta.status == 200) {
           this.$message({
             message: `恭喜你，${res.data.username}编辑成功`,
@@ -266,12 +283,22 @@ export default {
         }
       });
     },
+    handleChange() {},
   },
 
   components: {},
   computed: {},
   mounted() {
     this.qq();
+    http({
+      url: "categories",
+      method: "get",
+      params: {
+        type: 3,
+      },
+    }).then((res) => {
+      this.list = res.data;
+    });
   },
 };
 </script>
@@ -289,5 +316,8 @@ export default {
 }
 .but {
   background: #f5f7fa;
+}
+.dd{
+  margin-left: 20px;
 }
 </style>

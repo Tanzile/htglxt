@@ -19,11 +19,10 @@ export default function (config) {
     });
     // 添加响应拦截器
     instance.interceptors.response.use(function (response) {
-
         // 对响应数据做点什么
-        // if (response.data.meta.status == 400) {
-        //     router.replace("/login");
-        // }
+        if (response.data.meta.status == 400) {
+            router.replace("/");
+        }
         return response.data;
         //根据data的情况。如果有提示token失效。过期，让用户重新登录
 
