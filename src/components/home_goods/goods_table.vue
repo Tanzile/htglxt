@@ -190,7 +190,7 @@ export default {
           }).then((res) => {
             if (res.meta.status == 200) {
               this.$message({
-                message: "恭喜你，删除用户成功",
+                message: "恭喜你，删除商品成功",
                 type: "success",
                 duration: 1000,
                 onClose: () => {
@@ -198,7 +198,7 @@ export default {
                 },
               });
             } else {
-              this.$message.error("用户删除失败");
+              this.$message.error("商品删除失败");
             }
           });
         },

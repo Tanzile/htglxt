@@ -1,9 +1,9 @@
 <template>
-  <div id="reports">
-      <div class="hh">
-        <Breadcrumb one="数据统计" two="数据列表"></Breadcrumb>
-      </div>
-    <div id="echarts_box"></div>
+  <div>
+    <Breadcrumb one="数据统计" two="数据列表"></Breadcrumb>
+    <div id="reports">
+      <div id="echarts_box"></div>
+    </div>
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
     height: 500px;
   }
 }
-.hh{
+.hh {
   position: absolute;
   margin-top: -50px;
 }

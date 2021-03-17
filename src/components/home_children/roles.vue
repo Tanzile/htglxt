@@ -1,174 +1,176 @@
 <template>
-  <div id="roles">
-    <div class="hh">
-      <Breadcrumb one="权限管理" two="角色列表"></Breadcrumb>
+  <div>
+    <Breadcrumb one="权限管理" two="角色列表"></Breadcrumb>
+    <div id="roles">
+      <!-- 添加角色 -->
+      <el-button type="primary" @click="dialogFormVisible = true">
+        添加角色
+      </el-button>
+      <el-dialog
+        title="添加角色"
+        v-model="dialogFormVisible"
+        :visible.sync="dialogFormVisible"
+      >
+        <el-form :model="rolesInfo" ref="rolesInfo">
+          <el-form-item>
+            <el-input
+              v-model="rolesInfo.rName"
+              autocomplete="off"
+              placeholder="请输入角色名称"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model="rolesInfo.rDesc"
+              autocomplete="off"
+              placeholder="请输入角色描述"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancleroles">取 消</el-button>
+            <el-button type="primary" @click="addroles('rolesInfo')"
+              >确 定</el-button
+            >
+          </span>
+        </template>
+      </el-dialog>
+      <!-- 编辑角色 -->
+      <el-dialog
+        title="编辑角色"
+        v-model="dialogEditVisible"
+        :visible.sync="dialogEditVisible"
+      >
+        <el-form :model="editsInfo" ref="editsInfo">
+          <el-form-item>
+            <el-input
+              v-model="editsInfo.eName"
+              autocomplete="off"
+              placeholder="请输入想修改的角色名称"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model="editsInfo.eDesc"
+              autocomplete="off"
+              placeholder="请输入想修改的角色描述"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancleedit">取 消</el-button>
+            <el-button type="primary" @click="editroles('editsInfo')"
+              >确 定</el-button
+            >
+          </span>
+        </template>
+      </el-dialog>
+      <!-- 添加权限 -->
+      <el-dialog
+        title="分配权限"
+        v-model="treeVisible"
+        :visible.sync="treeVisible"
+        @close="resettree"
+      >
+        <el-tree
+          :data="rolestree"
+          show-checkbox
+          node-key="id"
+          :props="treeprops"
+          default-expand-all
+          :default-checked-keys="deftrees"
+          ref="reftree"
+        ></el-tree>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancletree">取 消</el-button>
+            <el-button @click="settree" type="primary">确 定</el-button>
+          </span>
+        </template>
+      </el-dialog>
+      <!-- 角色列表 -->
+      <el-table :data="tableData" style="width: 100%" border stripe>
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-row
+              :class="['rowbottom', i1 === 0 ? 'rowtop' : '', 'vcenter']"
+              v-for="(lev1, i1) in scope.row.children"
+              :key="lev1.id"
+            >
+              <el-col :span="5">
+                <el-tag
+                  closable
+                  @close="removeRightsById(scope.row, lev1.id)"
+                  >{{ lev1.authName }}</el-tag
+                >
+                <i class="el-icon-caret-right"></i>
+              </el-col>
+              <el-col :span="19">
+                <el-row
+                  :class="[i2 === 0 ? '' : 'rowtop', 'vcenter']"
+                  v-for="(lev2, i2) in lev1.children"
+                  :key="lev2.id"
+                >
+                  <el-col :span="6">
+                    <el-tag
+                      closable
+                      @close="removeRightsById(scope.row, lev2.id)"
+                      type="success"
+                      >{{ lev2.authName }}</el-tag
+                    >
+                    <i class="el-icon-caret-right"></i>
+                  </el-col>
+                  <el-col :span="18">
+                    <el-tag
+                      closable
+                      @close="removeRightsById(scope.row, lev3.id)"
+                      type="warning"
+                      v-for="lev3 in lev2.children"
+                      :key="lev3.id"
+                    >
+                      {{ lev3.authName }}
+                    </el-tag>
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </template>
+        </el-table-column>
+        <el-table-column label="#" type="index"></el-table-column>
+        <el-table-column label="角色名称" prop="roleName"></el-table-column>
+        <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
+        <el-table-column label="操作">
+          <!-- 操作按钮 -->
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
+              @click="goedit(scope.row.id)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              @click="deleroles(scope.row.id)"
+            >
+              删除
+            </el-button>
+            <el-button
+              size="mini"
+              type="warning"
+              icon="el-icon-setting"
+              @click="gorolestree(scope.row)"
+              >分配权限</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <!-- 添加角色 -->
-    <el-button type="primary" @click="dialogFormVisible = true">
-      添加角色
-    </el-button>
-    <el-dialog
-      title="添加角色"
-      v-model="dialogFormVisible"
-      :visible.sync="dialogFormVisible"
-    >
-      <el-form :model="rolesInfo" ref="rolesInfo">
-        <el-form-item>
-          <el-input
-            v-model="rolesInfo.rName"
-            autocomplete="off"
-            placeholder="请输入角色名称"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            v-model="rolesInfo.rDesc"
-            autocomplete="off"
-            placeholder="请输入角色描述"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="cancleroles">取 消</el-button>
-          <el-button type="primary" @click="addroles('rolesInfo')"
-            >确 定</el-button
-          >
-        </span>
-      </template>
-    </el-dialog>
-    <!-- 编辑角色 -->
-    <el-dialog
-      title="编辑角色"
-      v-model="dialogEditVisible"
-      :visible.sync="dialogEditVisible"
-    >
-      <el-form :model="editsInfo" ref="editsInfo">
-        <el-form-item>
-          <el-input
-            v-model="editsInfo.eName"
-            autocomplete="off"
-            placeholder="请输入想修改的角色名称"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            v-model="editsInfo.eDesc"
-            autocomplete="off"
-            placeholder="请输入想修改的角色描述"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="cancleedit">取 消</el-button>
-          <el-button type="primary" @click="editroles('editsInfo')"
-            >确 定</el-button
-          >
-        </span>
-      </template>
-    </el-dialog>
-    <!-- 添加权限 -->
-    <el-dialog
-      title="分配权限"
-      v-model="treeVisible"
-      :visible.sync="treeVisible"
-      @close="resettree"
-    >
-      <el-tree
-        :data="rolestree"
-        show-checkbox
-        node-key="id"
-        :props="treeprops"
-        default-expand-all
-        :default-checked-keys="deftrees"
-        ref="reftree"
-      ></el-tree>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="cancletree">取 消</el-button>
-          <el-button @click="settree" type="primary">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
-    <!-- 角色列表 -->
-    <el-table :data="tableData" style="width: 100%" border stripe>
-      <el-table-column type="expand">
-        <template slot-scope="scope">
-          <el-row
-            :class="['rowbottom', i1 === 0 ? 'rowtop' : '', 'vcenter']"
-            v-for="(lev1, i1) in scope.row.children"
-            :key="lev1.id"
-          >
-            <el-col :span="5">
-              <el-tag closable @close="removeRightsById(scope.row, lev1.id)">{{
-                lev1.authName
-              }}</el-tag>
-              <i class="el-icon-caret-right"></i>
-            </el-col>
-            <el-col :span="19">
-              <el-row
-                :class="[i2 === 0 ? '' : 'rowtop', 'vcenter']"
-                v-for="(lev2, i2) in lev1.children"
-                :key="lev2.id"
-              >
-                <el-col :span="6">
-                  <el-tag
-                    closable
-                    @close="removeRightsById(scope.row, lev2.id)"
-                    type="success"
-                    >{{ lev2.authName }}</el-tag
-                  >
-                  <i class="el-icon-caret-right"></i>
-                </el-col>
-                <el-col :span="18">
-                  <el-tag
-                    closable
-                    @close="removeRightsById(scope.row, lev3.id)"
-                    type="warning"
-                    v-for="lev3 in lev2.children"
-                    :key="lev3.id"
-                  >
-                    {{ lev3.authName }}
-                  </el-tag>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-        </template>
-      </el-table-column>
-      <el-table-column label="#" type="index"></el-table-column>
-      <el-table-column label="角色名称" prop="roleName"></el-table-column>
-      <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
-      <el-table-column label="操作">
-        <!-- 操作按钮 -->
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            icon="el-icon-edit"
-            @click="goedit(scope.row.id)"
-          >
-            编辑
-          </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            icon="el-icon-delete"
-            @click="deleroles(scope.row.id)"
-          >
-            删除
-          </el-button>
-          <el-button
-            size="mini"
-            type="warning"
-            icon="el-icon-setting"
-            @click="gorolestree(scope.row)"
-            >分配权限</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
   </div>
 </template>
 
@@ -459,9 +461,5 @@ export default {
     display: flex;
     align-items: center;
   }
-}
-.hh{
-  position: absolute;
-  margin-top: -50px;
 }
 </style>
